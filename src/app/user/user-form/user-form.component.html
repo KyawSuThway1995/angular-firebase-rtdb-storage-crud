@@ -1,0 +1,110 @@
+<section>
+    <h2>Add/Edit User</h2>
+    <span><sup>*</sup>Mandatory fields</span>
+    <p-toast [preventDuplicates]=true></p-toast>
+    <p-confirmDialog key="deleteConfirm" [style]="{width: '50vw'}" [baseZIndex]="10000" [closable]="false"
+        rejectButtonStyleClass="p-button-text">
+    </p-confirmDialog>
+    <ng-container *ngIf="userForm">
+        <form class="mt-5" [formGroup]="userForm">
+            <div class="grid">
+                <div class="col-8">
+                    <section class="w-10rem mb-3">
+                        <ng-container *ngIf="profileImage">
+                            <img [src]="profileImage" alt="" class="w-auto h-10rem border-100">
+                        </ng-container>
+                        <input type="file" accept="image/*" (change)="selectedFile($event)">
+                    </section>
+                    <section class="grid">
+                        <div class="col">
+                            <article class="formgrid grid">
+                                <div class="field col">
+                                    <label for="name">Name<sup>*</sup></label>
+                                    <input type="text" pInputText id="name" class="w-full outline-none"
+                                        formControlName="name">
+                                </div>
+                            </article>
+                        </div>
+                        <div class="col">
+                            <article class="formgrid grid">
+                                <div class="field col">
+                                    <label for="dob">Date of Birth<sup>*</sup></label>
+                                    <p-calendar dateFormat="dd/mm/yy" styleClass="w-full" inputId="dob"
+                                        formControlName="dob"></p-calendar>
+                                </div>
+                            </article>
+                        </div>
+                    </section>
+                    <section class="formgrid grid">
+                        <div class="field col-5">
+                            <label for="gender">Gender<sup>*</sup></label>
+                            <div class="flex justify-content-between">
+                                <div *ngFor="let g of genders" class="field-checkbox">
+                                    <p-radioButton name="gender" [value]="g" formControlName="gender"></p-radioButton>
+                                    <label>{{g}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="formgrid grid">
+                        <div class="field col">
+                            <label for="email">Email</label>
+                            <input type="email" pInputText id="emil" class="w-full" formControlName="email">
+                        </div>
+                    </section>
+                    <section class="formgrid grid">
+                        <div class="field col">
+                            <label for="education">Education<sup>*</sup></label>
+                            <p-dropdown styleClass="w-full" [options]="educations" placeholder="Select an Education" formControlName="education">
+                            </p-dropdown>
+                        </div>
+                    </section>
+                    <section class="formgrid grid">
+                        <div class="field col-10">
+                            <label for="hobby">Hobbies</label>
+                            <div class="flex justify-content-between">
+                                <div *ngFor="let hobby of hobbies; index as i;" class="field-checkbox">
+                                    <p-checkbox name="hobby" [value]="hobby" [formControl]="hobbyControl"></p-checkbox>
+                                    <label>{{hobby}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="formgrid grid">
+                        <div class="field col">
+                            <label for="address">Address</label>
+                            <textarea pInputTextarea id="address" class="w-full" [autoResize]=true
+                                formControlName="address"></textarea>
+                        </div>
+                    </section>
+                    <section class="formgrid grid" formArrayName="experiences">
+                        <div class="field col-12">
+                            <label for="address">Work Experiences</label>
+                            <div class="border-1 border-300 px-3 pt-3 mb-3"
+                                *ngFor="let exp of experiences.controls; index as i;" [formGroupName]="i">
+                                <div class="field">
+                                    <label class="block flex justify-content-between" for="">Duration<sup>*</sup>
+                                        <span class="pi pi-trash text-lg cursor-pointer"
+                                            (click)="removeExperience(i)"></span>
+                                    </label>
+                                    <p-calendar selectionMode="range" dateFormat="dd/mm/yy" styleClass="w-full"
+                                        formControlName="duration"></p-calendar>
+                                </div>
+                                <div class="field">
+                                    <label for="address">Description<sup>*</sup></label>
+                                    <textarea pInputTextarea id="address" class="w-full" [autoResize]=true
+                                        formControlName="description"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <button (click)="addExperience()" pButton
+                            class="p-button p-button-rounded p-button-outlined w-13rem ml-auto"
+                            label="+Add Experience" [disabled]="isSaving"></button>
+                    </section>
+                    <button (click)="save()" pButton class="p-button p-button-rounded w-10rem" label="Save"
+                        [disabled]="disabledSaveBtn"></button>
+                </div>
+            </div>
+        </form>
+    </ng-container>
+</section>
